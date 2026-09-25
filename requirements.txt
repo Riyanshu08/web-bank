@@ -1,0 +1,7 @@
+flask
+pandas
+bcrypt
+matplotlib
+tabulate
+fpdf
+gunicorn

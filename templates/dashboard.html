@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Bank Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .logout { background: #dc3545; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; }
+        .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .card { background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #ddd; }
+        .card h4 { margin-top: 0; }
+        input, button { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 14px; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h2>Welcome, {{ name }}</h2>
+                <p>Account No: <strong>{{ account_number }}</strong> | Balance: <strong style="color: green;">${| "%.2f"|format(balance) }}</strong></p>
+            </div>
+            <a href="/logout" class="logout">Log Out</a>
+        </div>
+
+        <div class="actions-grid">
+            <div class="card">
+                <h4>Deposit</h4>
+                <form action="/transaction" method="POST">
+                    <input type="hidden" name="action" value="deposit">
+                    <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+                    <button type="submit" style="background: #28a745;">Deposit</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h4>Withdraw</h4>
+                <form action="/transaction" method="POST">
+                    <input type="hidden" name="action" value="withdraw">
+                    <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+                    <button type="submit" style="background: #ffc107; color: black;">Withdraw</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h4>Transfer</h4>
+                <form action="/transaction" method="POST">
+                    <input type="hidden" name="action" value="transfer">
+                    <input type="text" name="target" placeholder="Recipient Acc No" required>
+                    <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+                    <button type="submit">Transfer</button>
+                </form>
+            </div>
+        </div>
+
+        <h3>Transaction History</h3>
+        <table>
+            <tr>
+                <th>Date/Time</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Balance After</th>
+            </tr>
+            {% for row in history %}
+            <tr>
+                <td>{{ row.DateTime }}</td>
+                <td>{{ row.Type }}</td>
+                <td>${{ "%.2f"|format(row.Amount) }}</td>
+                <td>${{ "%.2f"|format(row.BalanceAfter) }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align: center;">No transactions recorded yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

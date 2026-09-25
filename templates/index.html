@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Portal - Login / Register</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 350px; }
+        h2 { text-align: center; color: #333; }
+        input, button { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .error { color: red; font-size: 14px; text-align: center; }
+        .success { color: green; font-size: 14px; text-align: center; }
+        hr { margin: 20px 0; border: 0; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Bank Management</h2>
+        
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        {% if success %}<p class="success">{{ success }}</p>{% endif %}
+
+        <h3>Log In</h3>
+        <form action="/login" method="POST">
+            <input type="text" name="account_number" placeholder="Account Number" required>
+            <input type="password" name="pin" placeholder="4-Digit PIN" maxlength="4" required>
+            <button type="submit">Log In</button>
+        </form>
+
+        <hr>
+
+        <h3>Create Account</h3>
+        <form action="/register" method="POST">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="password" name="pin" placeholder="Set 4-Digit PIN" maxlength="4" required>
+            <input type="number" step="0.01" name="balance" placeholder="Opening Deposit" required>
+            <button type="submit" style="background: #28a745;">Register</button>
+        </form>
+    </div>
+</body>
+</html>
